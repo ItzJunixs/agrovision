@@ -1,0 +1,15 @@
+# Datos: no se suben al repo (se descargan de Kaggle)
+data/
+*.zip
+# Pesos de ImageNet (se descargan solos al entrenar) y modelo Keras completo (pesado)
+models/*.h5
+models/*.keras
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+staticfiles/
+.env
+db.sqlite3

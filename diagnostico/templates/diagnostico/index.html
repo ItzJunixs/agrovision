@@ -1,0 +1,130 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgroVision</title>
+<style>
+  :root { --bg:#f6f5ef; --card:#fff; --ink:#1f2a1f; --muted:#5d6b5d; --green:#2f7d32; --green-soft:#e3f1e3;
+          --red:#b23b2a; --red-soft:#f7e4e0; --line:#dfe3d8; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); line-height:1.45; }
+  main { max-width:960px; margin:0 auto; padding:32px 16px 56px; }
+  h1 { margin:0; font-size:30px; } h2 { font-size:20px; margin:40px 0 12px; } h3 { font-size:15px; margin:0 0 10px; }
+  p.sub { margin:4px 0 24px; color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  .grid { display:grid; gap:16px; grid-template-columns:1fr; }
+  @media (min-width:760px) { .grid.two { grid-template-columns:1fr 1fr; } }
+  form { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  input[type=file] { flex:1; min-width:220px; padding:10px; border:1px dashed var(--line); border-radius:10px; background:#fbfbf8; }
+  button { padding:11px 22px; border:0; border-radius:10px; background:var(--green); color:#fff; font-size:15px; cursor:pointer; }
+  .error { margin-top:12px; color:var(--red); }
+  .foto { width:100%; border-radius:10px; background:#eef0ea; }
+  .diag { font-size:24px; font-weight:650; margin:4px 0; }
+  .tag { display:inline-block; font-size:12px; padding:3px 10px; border-radius:99px; font-weight:600; }
+  .ok { background:var(--green-soft); color:var(--green); } .bad { background:var(--red-soft); color:var(--red); }
+  .kpis { display:grid; gap:12px; grid-template-columns:repeat(2,1fr); }
+  @media (min-width:760px) { .kpis { grid-template-columns:repeat(4,1fr); } }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .kpi b { display:block; font-size:24px; } .kpi span { color:var(--muted); font-size:13px; }
+  .chart { position:relative; height:260px; }
+  .note { color:var(--muted); font-size:13px; margin:10px 0 0; }
+  img.cm { width:100%; border-radius:8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AgroVision</h1>
+  <p class="sub">Diagnóstico de enfermedades en hojas de 14 cultivos (38 clases) con una red neuronal convolucional.</p>
+
+  <div class="card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="imagen" accept="image/*" capture="environment" required>
+      <button type="submit">Diagnosticar</button>
+    </form>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  </div>
+
+  {% if resultado %}
+  <h2>Resultado</h2>
+  <div class="grid two">
+    <div class="card">
+      <img class="foto" src="data:image/jpeg;base64,{{ imagen_b64 }}" alt="Hoja analizada">
+    </div>
+    <div class="card">
+      <span class="tag {% if resultado.sana %}ok{% else %}bad{% endif %}">{% if resultado.sana %}Hoja sana{% else %}Enfermedad detectada{% endif %}</span>
+      <p class="diag">{{ resultado.cultivo }}: {{ resultado.estado }}</p>
+      <h3>Probabilidad de las 3 clases más probables</h3>
+      <div class="chart" style="height:200px"><canvas id="chartTop3"></canvas></div>
+      <p class="note">El modelo se entrenó con fotos de laboratorio; en fotos de campo la confianza puede bajar.</p>
+    </div>
+  </div>
+  {{ top3|json_script:"data-top3" }}
+  {% endif %}
+
+  <h2>Cómo se comporta el modelo</h2>
+  <div class="kpis">
+    <div class="kpi"><b>{% widthratio metricas.valid_accuracy 1 100 %}%</b><span>Accuracy en validación</span></div>
+    <div class="kpi"><b>{% widthratio metricas.valid_top3_accuracy 1 100 %}%</b><span>Acierto dentro del top-3</span></div>
+    <div class="kpi"><b>{% widthratio metricas.valid_f1_macro 1 100 %}%</b><span>F1 macro</span></div>
+    <div class="kpi"><b>{{ metricas.imagenes_train }}</b><span>Imágenes de entrenamiento</span></div>
+  </div>
+
+  <div class="grid two" style="margin-top:16px">
+    <div class="card">
+      <h3>Pérdida por época</h3>
+      <div class="chart"><canvas id="chartLoss"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Accuracy por época</h3>
+      <div class="chart"><canvas id="chartAcc"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Matriz de confusión (validación, normalizada por clase)</h3>
+    <img class="cm" src="{% static 'reports/confusion_matrix.png' %}" alt="Matriz de confusión de las 38 clases" loading="lazy">
+    <p class="note">La diagonal son los aciertos. Los errores se concentran entre enfermedades parecidas del tomate y del maíz.</p>
+  </div>
+
+  <p class="note">Modelo: {{ metricas.modelo }} · {{ metricas.clases }} clases · {{ metricas.tamano_tflite_mb }} MB.</p>
+</main>
+
+{{ historial|json_script:"data-historial" }}
+<script src="{% static 'diagnostico/vendor/chart.umd.min.js' %}"></script>
+<script>
+const verde = '#2f7d32', naranja = '#d9822b', rejilla = '#e6e9e1';
+Chart.defaults.font.family = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+Chart.defaults.color = '#5d6b5d';
+const h = JSON.parse(document.getElementById('data-historial').textContent);
+const epocas = h.loss.map((_, i) => i + 1);
+const linea = (id, train, valid, max) => new Chart(document.getElementById(id), {
+  type: 'line',
+  data: { labels: epocas, datasets: [
+    { label: 'Entrenamiento', data: train, borderColor: verde, backgroundColor: verde, pointRadius: 0, borderWidth: 2, tension: .25 },
+    { label: 'Validación', data: valid, borderColor: naranja, backgroundColor: naranja, pointRadius: 0, borderWidth: 2, tension: .25 }]},
+  options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+    scales: { x: { title: { display: true, text: 'Época' }, grid: { display: false } },
+              y: { min: 0, max: max, grid: { color: rejilla } } },
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
+});
+linea('chartLoss', h.loss, h.val_loss);
+linea('chartAcc', h.accuracy, h.val_accuracy, 1);
+
+const t = document.getElementById('data-top3');
+if (t) {
+  const top3 = JSON.parse(t.textContent);
+  new Chart(document.getElementById('chartTop3'), {
+    type: 'bar',
+    data: { labels: top3.map(p => `${p.cultivo}: ${p.estado}`),
+            datasets: [{ data: top3.map(p => +(p.probabilidad * 100).toFixed(1)),
+                         backgroundColor: top3.map((p, i) => i === 0 ? verde : '#a9c9aa'), borderRadius: 4 }]},
+    options: { indexAxis: 'y', maintainAspectRatio: false,
+      scales: { x: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: rejilla } }, y: { grid: { display: false } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.raw + '%' } } } }
+  });
+}
+</script>
+</body>
+</html>

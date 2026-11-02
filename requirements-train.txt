@@ -1,0 +1,5 @@
+# Dependencias para preparar datos y entrenar (local o Google Colab)
+tensorflow-cpu==2.17.*   # en Colab usar el tensorflow que ya trae instalado (con GPU)
+scikit-learn>=1.4
+pillow>=10.0
+matplotlib>=3.8

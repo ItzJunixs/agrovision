@@ -1,0 +1,12 @@
+{
+  "modelo": "MobileNetV2 congelado (ImageNet) + Dense softmax",
+  "imagenes_train": 3800,
+  "imagenes_valid": 1140,
+  "clases": 38,
+  "epocas_entrenadas": 38,
+  "valid_accuracy": 0.9237,
+  "valid_f1_macro": 0.924,
+  "valid_top3_accuracy": 0.9895,
+  "test_kaggle_accuracy": 0.8485,
+  "tamano_tflite_mb": 2.56
+}

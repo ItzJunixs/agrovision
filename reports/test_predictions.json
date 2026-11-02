@@ -1,0 +1,233 @@
+[
+ {
+  "archivo": "AppleCedarRust1.JPG",
+  "real": "Apple___Cedar_apple_rust",
+  "prediccion": "Apple___Cedar_apple_rust",
+  "confianza": 0.9541,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleCedarRust2.JPG",
+  "real": "Apple___Cedar_apple_rust",
+  "prediccion": "Apple___Cedar_apple_rust",
+  "confianza": 0.9992,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleCedarRust3.JPG",
+  "real": "Apple___Cedar_apple_rust",
+  "prediccion": "Apple___Cedar_apple_rust",
+  "confianza": 0.7338,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleCedarRust4.JPG",
+  "real": "Apple___Cedar_apple_rust",
+  "prediccion": "Apple___Cedar_apple_rust",
+  "confianza": 0.9987,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleScab1.JPG",
+  "real": "Apple___Apple_scab",
+  "prediccion": "Apple___Apple_scab",
+  "confianza": 0.8256,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleScab2.JPG",
+  "real": "Apple___Apple_scab",
+  "prediccion": "Apple___Apple_scab",
+  "confianza": 0.9963,
+  "acierto": true
+ },
+ {
+  "archivo": "AppleScab3.JPG",
+  "real": "Apple___Apple_scab",
+  "prediccion": "Squash___Powdery_mildew",
+  "confianza": 0.8979,
+  "acierto": false
+ },
+ {
+  "archivo": "CornCommonRust1.JPG",
+  "real": "Corn_(maize)___Common_rust_",
+  "prediccion": "Corn_(maize)___Common_rust_",
+  "confianza": 0.9983,
+  "acierto": true
+ },
+ {
+  "archivo": "CornCommonRust2.JPG",
+  "real": "Corn_(maize)___Common_rust_",
+  "prediccion": "Corn_(maize)___Common_rust_",
+  "confianza": 0.9988,
+  "acierto": true
+ },
+ {
+  "archivo": "CornCommonRust3.JPG",
+  "real": "Corn_(maize)___Common_rust_",
+  "prediccion": "Corn_(maize)___Common_rust_",
+  "confianza": 0.9995,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoEarlyBlight1.JPG",
+  "real": "Potato___Early_blight",
+  "prediccion": "Potato___Early_blight",
+  "confianza": 0.9578,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoEarlyBlight2.JPG",
+  "real": "Potato___Early_blight",
+  "prediccion": "Potato___Early_blight",
+  "confianza": 0.9983,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoEarlyBlight3.JPG",
+  "real": "Potato___Early_blight",
+  "prediccion": "Potato___Late_blight",
+  "confianza": 0.5234,
+  "acierto": false
+ },
+ {
+  "archivo": "PotatoEarlyBlight4.JPG",
+  "real": "Potato___Early_blight",
+  "prediccion": "Potato___Early_blight",
+  "confianza": 0.9981,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoEarlyBlight5.JPG",
+  "real": "Potato___Early_blight",
+  "prediccion": "Potato___Early_blight",
+  "confianza": 0.9888,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoHealthy1.JPG",
+  "real": "Potato___healthy",
+  "prediccion": "Potato___healthy",
+  "confianza": 0.6013,
+  "acierto": true
+ },
+ {
+  "archivo": "PotatoHealthy2.JPG",
+  "real": "Potato___healthy",
+  "prediccion": "Potato___healthy",
+  "confianza": 0.8514,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoEarlyBlight1.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Late_blight",
+  "confianza": 0.8476,
+  "acierto": false
+ },
+ {
+  "archivo": "TomatoEarlyBlight2.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Early_blight",
+  "confianza": 0.674,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoEarlyBlight3.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Spider_mites Two-spotted_spider_mite",
+  "confianza": 0.6282,
+  "acierto": false
+ },
+ {
+  "archivo": "TomatoEarlyBlight4.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Early_blight",
+  "confianza": 0.85,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoEarlyBlight5.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Early_blight",
+  "confianza": 0.5502,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoEarlyBlight6.JPG",
+  "real": "Tomato___Early_blight",
+  "prediccion": "Tomato___Early_blight",
+  "confianza": 0.9615,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoHealthy1.JPG",
+  "real": "Tomato___healthy",
+  "prediccion": "Tomato___healthy",
+  "confianza": 0.9653,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoHealthy2.JPG",
+  "real": "Tomato___healthy",
+  "prediccion": "Tomato___healthy",
+  "confianza": 0.8667,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoHealthy3.JPG",
+  "real": "Tomato___healthy",
+  "prediccion": "Tomato___Target_Spot",
+  "confianza": 0.6681,
+  "acierto": false
+ },
+ {
+  "archivo": "TomatoHealthy4.JPG",
+  "real": "Tomato___healthy",
+  "prediccion": "Tomato___healthy",
+  "confianza": 0.9981,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus1.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 0.9368,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus2.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 0.9998,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus3.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 0.9939,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus4.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 0.9991,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus5.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 0.9997,
+  "acierto": true
+ },
+ {
+  "archivo": "TomatoYellowCurlVirus6.JPG",
+  "real": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "prediccion": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+  "confianza": 1.0,
+  "acierto": true
+ }
+]

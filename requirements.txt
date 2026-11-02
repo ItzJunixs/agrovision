@@ -1,0 +1,8 @@
+# Dependencias de la aplicacion web (Django) desplegada en Render.
+# No incluye TensorFlow: el modelo se sirve con el runtime liviano de TFLite.
+django>=5.2,<6
+gunicorn>=23
+whitenoise>=6.7
+pillow>=10.0
+numpy>=1.26
+ai-edge-litert>=1.2
