@@ -73,11 +73,11 @@
 
   <h2>Cómo se comporta el modelo</h2>
   <div class="kpis">
-    <div class="kpi"><b>{% widthratio metricas.accuracy 1 100 %}%</b><span>Accuracy en {{ metricas.conjunto }}</span></div>
-    <div class="kpi"><b>{% widthratio metricas.top3_accuracy 1 100 %}%</b><span>Acierto dentro del top-3</span></div>
-    <div class="kpi"><b>{% widthratio metricas.f1_macro 1 100 %}%</b><span>F1 macro</span></div>
+    <div class="kpi"><b>{{ pct.accuracy }}</b><span>Accuracy en {{ metricas.conjunto }}</span></div>
+    <div class="kpi"><b>{{ pct.top3_accuracy }}</b><span>Acierto dentro del top-3</span></div>
+    <div class="kpi"><b>{{ pct.f1_macro }}</b><span>F1 macro</span></div>
     {% if metricas.plantdoc_accuracy %}
-    <div class="kpi"><b>{% widthratio metricas.plantdoc_accuracy 1 100 %}%</b><span>Accuracy en fotos de campo (PlantDoc)</span></div>
+    <div class="kpi"><b>{{ pct.plantdoc_accuracy }}</b><span>Accuracy en fotos de campo (PlantDoc)</span></div>
     {% else %}
     <div class="kpi"><b>{{ metricas.imagenes_train }}</b><span>Imágenes de entrenamiento</span></div>
     {% endif %}

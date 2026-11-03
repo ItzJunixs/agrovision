@@ -17,9 +17,21 @@ def _leer_json(nombre):
     return json.loads((REPORTS / nombre).read_text(encoding="utf-8"))
 
 
+def _porcentaje(valor):
+    """Un decimal; dos si con uno se veria 100 % sin serlo (99,97 % no es 100 %)."""
+    txt = f"{valor * 100:.1f}"
+    if txt == "100.0" and valor < 1:
+        txt = f"{valor * 100:.2f}"
+    return txt.replace(".", ",") + " %"
+
+
 def index(request):
+    metricas = _leer_json("metrics.json")
     ctx = {
-        "metricas": _leer_json("metrics.json"),
+        "metricas": metricas,
+        # porcentajes con un decimal: 99,95 % no debe verse como 100 %
+        "pct": {k: _porcentaje(metricas[k])
+                for k in ("accuracy", "top3_accuracy", "f1_macro", "plantdoc_accuracy") if metricas.get(k) is not None},
         # grafica 1: curvas de entrenamiento (perdida y accuracy por epoca)
         "historial": _leer_json("history.json"),
     }
