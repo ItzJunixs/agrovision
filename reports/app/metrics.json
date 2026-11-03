@@ -1,11 +1,18 @@
 {
-  "version": "v0.1.0",
-  "modelo": "MobileNetV2 congelado + capa densa (muestra de 3.800 imágenes)",
+  "version": "v1.0.0",
+  "modelo": "ResNet50 con fine-tuning (Adam)",
+  "experimento": "E3",
   "clases": 38,
-  "imagenes_train": 3800,
-  "conjunto": "validación",
-  "accuracy": 0.9237,
-  "top3_accuracy": 0.9895,
-  "f1_macro": 0.924,
-  "tamano_tflite_mb": 2.56
+  "imagenes_train": 70196,
+  "conjunto": "prueba",
+  "accuracy": 0.9914,
+  "top3_accuracy": 0.9999,
+  "f1_macro": 0.9913,
+  "plantdoc_accuracy": 0.2966,
+  "tamano_tflite_mb": 24.0,
+  "verificacion_tflite": {
+    "muestras": 760,
+    "accuracy_keras": 0.9829,
+    "accuracy_tflite": 0.9816
+  }
 }

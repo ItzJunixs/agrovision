@@ -1,0 +1,22 @@
+{
+  "imagenes": 8834,
+  "accuracy": 0.9817,
+  "precision_macro": 0.9826,
+  "recall_macro": 0.9815,
+  "f1_macro": 0.9815,
+  "top3_accuracy": 0.9995,
+  "recall_enferma": 0.9987,
+  "confianza_promedio": 0.9895,
+  "ID": "E5",
+  "Acc. test": 0.9817,
+  "F1 test": 0.9815,
+  "Top-3 test": 0.9995,
+  "Recall enferma": 0.9987,
+  "Confianza prom.": 0.9895,
+  "Acc. Kaggle 33": 0.9394,
+  "Acc. PlantDoc": 0.2966,
+  "Top-3 PlantDoc": 0.5339,
+  "Cultivo PlantDoc": 0.4958,
+  "MB": 9.8,
+  "ms/imagen": 203.3
+}

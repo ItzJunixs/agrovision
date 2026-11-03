@@ -1,0 +1,18 @@
+{
+  "imagenes": 445,
+  "accuracy": 0.4921,
+  "precision_macro": 0.5487,
+  "recall_macro": 0.4914,
+  "f1_macro": 0.4542,
+  "top3_accuracy": 0.6831,
+  "recall_enferma": 0.8383,
+  "confianza_promedio": 0.2788,
+  "experimento": "C2",
+  "arquitectura": "resnet50",
+  "conjunto_evaluado": "val",
+  "imagenes_train": 950,
+  "epocas": 1,
+  "minutos": 0.3,
+  "parametros_totales": 23665574,
+  "accuracy_train_final": 0.1516
+}

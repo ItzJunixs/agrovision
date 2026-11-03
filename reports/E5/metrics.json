@@ -1,0 +1,18 @@
+{
+  "imagenes": 8837,
+  "accuracy": 0.9848,
+  "precision_macro": 0.9853,
+  "recall_macro": 0.9847,
+  "f1_macro": 0.9846,
+  "top3_accuracy": 0.9984,
+  "recall_enferma": 0.9995,
+  "confianza_promedio": 0.9898,
+  "experimento": "E5",
+  "arquitectura": "mobilenetv2",
+  "conjunto_evaluado": "val",
+  "imagenes_train": 70196,
+  "epocas": 15,
+  "minutos": 38.0,
+  "parametros_totales": 2306662,
+  "accuracy_train_final": 0.9945
+}

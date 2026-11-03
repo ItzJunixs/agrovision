@@ -1,0 +1,11 @@
+{
+  "imagenes": 236,
+  "accuracy": 0.2754,
+  "precision_macro": 0.2757,
+  "recall_macro": 0.2236,
+  "f1_macro": 0.2042,
+  "top3_accuracy": 0.5212,
+  "recall_enferma": 0.9178,
+  "confianza_promedio": 0.8455,
+  "accuracy_cultivo": 0.4619
+}

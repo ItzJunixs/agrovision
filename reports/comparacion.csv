@@ -1,0 +1,8 @@
+ID,Modelo,Imágenes train,Épocas,Accuracy,F1 macro,Top-3,Recall enferma,Confianza prom.,Parámetros,Minutos
+E1,CNN propia (desde cero),70196,17,0.9504,0.9504,0.9966,0.9874,0.9527,427654,56.8
+C1,"ResNet50 congelada, 100 img/clase",3800,20,0.8979,0.8973,0.9826,0.9484,0.893,23665574,10.1
+C2,"ResNet50 congelada, 500 img/clase",19000,17,0.9374,0.9368,0.9934,0.961,0.9411,23665574,19.7
+E2,"ResNet50 congelada, todas",70196,5,0.9422,0.9412,0.9943,0.9681,0.9501,23665574,17.0
+E3,"ResNet50 fine-tuning, Adam",70196,10,0.992,0.9919,0.9995,0.9977,0.9949,23665574,41.1
+E4,"ResNet50 fine-tuning, SGD",70196,10,0.9871,0.9871,0.9997,0.9932,0.9911,23665574,37.3
+E5,MobileNetV2 fine-tuning,70196,15,0.9848,0.9846,0.9984,0.9995,0.9898,2306662,38.0

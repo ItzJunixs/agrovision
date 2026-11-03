@@ -1,0 +1,18 @@
+{
+  "imagenes": 445,
+  "accuracy": 0.0225,
+  "precision_macro": 0.0014,
+  "recall_macro": 0.0231,
+  "f1_macro": 0.0025,
+  "top3_accuracy": 0.0764,
+  "recall_enferma": 1.0,
+  "confianza_promedio": 0.1846,
+  "experimento": "E1",
+  "arquitectura": "cnn",
+  "conjunto_evaluado": "val",
+  "imagenes_train": 3508,
+  "epocas": 1,
+  "minutos": 0.4,
+  "parametros_totales": 427654,
+  "accuracy_train_final": 0.187
+}
