@@ -78,6 +78,36 @@ python scripts/train_baseline.py --data data/subset     # descarga los pesos de 
 python scripts/make_plots.py
 ```
 
+## Entrenamiento completo (v0.2 en adelante)
+
+Se entrena en WSL2 (Ubuntu) con la GPU; TensorFlow no usa la GPU en Windows nativo desde la versión 2.11.
+
+**División de los datos.** `data/splits.csv` divide las 87.867 imágenes de `train` y `valid` en 80 % entrenamiento, 10 % validación y 10 % prueba. La división se hace por **foto original**: el dataset trae hasta 6 variaciones de cada foto (espejos y rotaciones), y en la división original de Kaggle el 60,6 % de `valid` son variaciones de fotos de `train`, lo que infla la precisión. Con esta división ninguna foto original queda en dos conjuntos. Se regenera con:
+
+```bash
+python scripts/make_split.py --zip ~/archive.zip
+```
+
+**Experimentos** (todos con las 38 clases):
+
+| ID | Modelo | Estrategia |
+| --- | --- | --- |
+| E1 | CNN propia | Desde cero |
+| C1, C2 | ResNet50 | Base congelada con 100 y 500 imágenes por clase (curva de aprendizaje) |
+| E2 | ResNet50 | Base congelada, todas las imágenes |
+| E3 | ResNet50 | Fine-tuning del bloque conv5 con Adam |
+| E4 | ResNet50 | Fine-tuning del bloque conv5 con SGD con momentum |
+| E5 | MobileNetV2 | Base congelada y luego fine-tuning |
+
+```bash
+source ~/venv/bin/activate
+bash scripts/run_all.sh smoke   # prueba de humo: 1 época con el 5 % de los datos
+bash scripts/run_all.sh         # todos los experimentos (varias horas)
+bash scripts/run_all.sh E2 E3   # solo algunos
+```
+
+Cada corrida guarda sus métricas, curvas, matriz de confusión y errores en `reports/<ID>/`, y el modelo en `models/runs/<ID>/` (no se sube al repo). `scripts/compare.py` arma la tabla comparativa y la curva de aprendizaje en `reports/`.
+
 ## Ejecutar la aplicación web localmente
 
 ```bash

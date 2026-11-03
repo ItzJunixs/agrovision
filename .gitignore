@@ -1,9 +1,14 @@
 # Datos: no se suben al repo (se descargan de Kaggle)
-data/
+data/*
+!data/splits.csv
+!data/splits_resumen.json
 *.zip
 # Pesos de ImageNet (se descargan solos al entrenar) y modelo Keras completo (pesado)
 models/*.h5
 models/*.keras
+# Modelos de cada corrida (pesados) y logs de entrenamiento
+models/runs/
+logs/
 # Python
 __pycache__/
 *.pyc
