@@ -4,6 +4,7 @@ Salidas en reports/:
   comparacion.csv y comparacion.md   tabla con las metricas de validacion de cada corrida
   curva_aprendizaje.png              accuracy y F1 segun las imagenes por clase (C1, C2, E2)
   comparacion_modelos.png            accuracy y F1 macro de cada corrida
+  evolucion_epocas.png               accuracy de validacion epoca por epoca de todas las corridas
 
 Uso:
   python scripts/compare.py
@@ -15,6 +16,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 import pandas as pd
 
 ORDEN = ["E1", "C1", "C2", "E2", "E3", "E4", "E5"]
@@ -94,6 +96,32 @@ def main():
         ax.spines[["top", "right"]].set_visible(False)
         fig.tight_layout()
         fig.savefig(rep / f"curva_aprendizaje{a.sufijo}.png", dpi=130)
+        plt.close(fig)
+
+
+    # evolucion epoca por epoca (para ver si mas epocas ayudaban o empeoraban)
+    hist = {e: pd.read_csv(rep / f"{e}{a.sufijo}" / "history.csv") for e in df["ID"]
+            if (rep / f"{e}{a.sufijo}" / "history.csv").exists()}
+    if hist:
+        fig, ax = plt.subplots(1, 2, figsize=(13, 4.8))
+        for e, h in hist.items():
+            ep = range(1, len(h) + 1)
+            linea, = ax[0].plot(ep, h["val_accuracy"] * 100, marker="o", ms=3, label=f"{e}: {NOMBRES[e]}")
+            ax[1].plot(ep, h["val_loss"], marker="o", ms=3, color=linea.get_color())
+            mejor = int(h["val_loss"].idxmin())   # la epoca que se guardo (early stopping)
+            ax[0].plot(mejor + 1, h["val_accuracy"].iloc[mejor] * 100, "*", ms=12, color=linea.get_color())
+        ax[0].set_title("Accuracy de validación por época (★ = época guardada)")
+        ax[0].set_ylabel("%")
+        ax[0].set_ylim(0, 100)
+        ax[1].set_title("Pérdida de validación por época")
+        for x in ax:
+            x.set_xlabel("Época")
+            x.grid(alpha=0.3)
+            x.spines[["top", "right"]].set_visible(False)
+            x.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+        ax[0].legend(fontsize=7, loc="lower right")
+        fig.tight_layout()
+        fig.savefig(rep / f"evolucion_epocas{a.sufijo}.png", dpi=130)
         plt.close(fig)
 
 

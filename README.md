@@ -18,9 +18,9 @@ Proyecto de la materia Inteligencia Artificial. Un modelo de visión por computa
 - **Errores en test:** 3 de los 5 son confusiones entre enfermedades del mismo cultivo (tizón temprano vs. tardío en papa y tomate).
 - **Sobreajuste:** accuracy de entrenamiento 99 % frente a 92 % en validación; esperable con solo 100 imágenes por clase.
 
-![Curvas de entrenamiento](reports/training_curves.png)
+![Curvas de entrenamiento](reports/v0.1/training_curves.png)
 
-La matriz de confusión completa está en [`reports/confusion_matrix.png`](reports/confusion_matrix.png) y el detalle por clase en [`reports/classification_report.json`](reports/classification_report.json).
+La matriz de confusión completa está en [`reports/v0.1/confusion_matrix.png`](reports/v0.1/confusion_matrix.png) y el detalle por clase en [`reports/v0.1/classification_report.json`](reports/v0.1/classification_report.json).
 
 ## Dataset
 
@@ -55,9 +55,9 @@ agrovision/
 │   ├── templates/diagnostico/index.html
 │   └── static/diagnostico/vendor/chart.umd.min.js   # Chart.js 4.4.1 (MIT)
 ├── models/
-│   ├── agrovision_baseline.tflite  # modelo desplegado
+│   ├── agrovision.tflite           # modelo desplegado (lo genera scripts/export_tflite.py)
 │   └── labels.json                 # orden de las 38 clases
-├── reports/                # métricas, historial, matriz de confusión, predicciones en test
+├── reports/                # v0.1/ modelo base · <ID>/ cada experimento · app/ lo que muestra la página
 ├── scripts/                # preparación de datos, entrenamiento y gráficas
 ├── manage.py
 ├── requirements.txt        # dependencias de la app web (Render)
@@ -108,6 +108,22 @@ bash scripts/run_all.sh E2 E3   # solo algunos
 
 Cada corrida guarda sus métricas, curvas, matriz de confusión y errores en `reports/<ID>/`, y el modelo en `models/runs/<ID>/` (no se sube al repo). `scripts/compare.py` arma la tabla comparativa y la curva de aprendizaje en `reports/`.
 
+### Evaluación final y despliegue del ganador
+
+Cuando terminan todos los entrenamientos, se evalúa cada modelo **una sola vez** en el test (8.834 imágenes que ningún modelo vio), en la carpeta `test` de Kaggle y en 236 fotos de campo de [PlantDoc](https://github.com/pratikkayal/PlantDoc-Dataset). Las fotos de PlantDoc no se usan para entrenar: solo miden cuánto cae el modelo fuera del laboratorio.
+
+```bash
+# PlantDoc, solo la carpeta test (unos 70 MB), una vez
+git clone --depth 1 --filter=blob:none --sparse https://github.com/pratikkayal/PlantDoc-Dataset ~/data/plantdoc
+(cd ~/data/plantdoc && git sparse-checkout set test)
+
+DATA="$HOME/data/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)"
+python scripts/evaluate.py --data-root "$DATA" --kaggle-test ~/data/test/test --plantdoc ~/data/plantdoc/test
+python scripts/export_tflite.py --data-root "$DATA"
+```
+
+`evaluate.py` deja la tabla en `reports/evaluacion_final.md` y el ganador en `reports/ganador.txt` (mayor F1 en test; si otro queda a menos de 1 punto y pesa menos, gana el liviano). `export_tflite.py` convierte el ganador a TFLite, verifica que no pierda más de 1 punto de accuracy y actualiza `models/agrovision.tflite` y `reports/app/`, que es lo que muestra la página.
+
 ## Ejecutar la aplicación web localmente
 
 ```bash
@@ -119,7 +135,9 @@ Abrir http://127.0.0.1:8000 y subir la foto de una hoja. La página muestra:
 
 1. El diagnóstico y una **gráfica de barras con las 3 clases más probables**.
 2. Las **curvas de pérdida y accuracy** por época del entrenamiento.
-3. La **matriz de confusión** de validación.
+3. La **matriz de confusión** del modelo desplegado.
+
+Si la clase más probable queda por debajo de 50 % de confianza, la página no da un diagnóstico seguro y pide otra foto.
 
 `/health/` responde el estado del servicio. La aplicación no usa base de datos.
 

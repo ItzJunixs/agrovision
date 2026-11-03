@@ -1,5 +1,6 @@
 """Carga el modelo TFLite de AgroVision y hace predicciones.
 
+El archivo models/agrovision.tflite lo genera scripts/export_tflite.py con el modelo ganador.
 Se usa ai-edge-litert (runtime de TensorFlow Lite) en lugar de TensorFlow completo
 para que el servicio quepa en los 512 MB de RAM del plan gratuito de Render.
 El modelo recibe la imagen RGB de 224x224 con valores 0-255; el preprocesamiento
@@ -12,7 +13,7 @@ import numpy as np
 from django.conf import settings
 from PIL import Image
 
-MODEL_PATH = settings.BASE_DIR / "models" / "agrovision_baseline.tflite"
+MODEL_PATH = settings.BASE_DIR / "models" / "agrovision.tflite"
 LABELS_PATH = settings.BASE_DIR / "models" / "labels.json"
 
 CROPS = {"Apple": "Manzana", "Blueberry": "Arándano", "Cherry_(including_sour)": "Cereza",

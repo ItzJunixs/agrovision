@@ -9,7 +9,8 @@ from PIL import Image, UnidentifiedImageError
 
 from .predictor import MODEL_PATH, predecir
 
-REPORTS = settings.BASE_DIR / "reports"
+REPORTS = settings.BASE_DIR / "reports" / "app"   # lo actualiza scripts/export_tflite.py
+UMBRAL_CONFIANZA = 0.5   # por debajo, la app pide otra foto en vez de dar un diagnostico seguro
 
 
 def _leer_json(nombre):
@@ -36,6 +37,7 @@ def index(request):
             else:
                 top3 = predecir(img)
                 ctx["resultado"] = top3[0]
+                ctx["confianza_baja"] = top3[0]["probabilidad"] < UMBRAL_CONFIANZA
                 # grafica 3: probabilidades del top-3 de la foto subida
                 ctx["top3"] = top3
                 vista = img.convert("RGB")

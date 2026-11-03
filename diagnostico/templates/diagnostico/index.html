@@ -23,6 +23,8 @@
   .diag { font-size:24px; font-weight:650; margin:4px 0; }
   .tag { display:inline-block; font-size:12px; padding:3px 10px; border-radius:99px; font-weight:600; }
   .ok { background:var(--green-soft); color:var(--green); } .bad { background:var(--red-soft); color:var(--red); }
+  .warn { background:#f9eeda; color:#8a5a00; }
+  .aviso { margin:10px 0 0; padding:10px 12px; border-radius:10px; background:#f9eeda; color:#6b4600; font-size:14px; }
   .kpis { display:grid; gap:12px; grid-template-columns:repeat(2,1fr); }
   @media (min-width:760px) { .kpis { grid-template-columns:repeat(4,1fr); } }
   .kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
@@ -53,8 +55,14 @@
       <img class="foto" src="data:image/jpeg;base64,{{ imagen_b64 }}" alt="Hoja analizada">
     </div>
     <div class="card">
+      {% if confianza_baja %}
+      <span class="tag warn">Confianza baja</span>
+      <p class="diag">Posible: {{ resultado.cultivo }}: {{ resultado.estado }}</p>
+      <p class="aviso">El modelo no está seguro de esta foto. Prueba con otra de una sola hoja, de cerca, bien iluminada y con fondo sencillo.</p>
+      {% else %}
       <span class="tag {% if resultado.sana %}ok{% else %}bad{% endif %}">{% if resultado.sana %}Hoja sana{% else %}Enfermedad detectada{% endif %}</span>
       <p class="diag">{{ resultado.cultivo }}: {{ resultado.estado }}</p>
+      {% endif %}
       <h3>Probabilidad de las 3 clases más probables</h3>
       <div class="chart" style="height:200px"><canvas id="chartTop3"></canvas></div>
       <p class="note">El modelo se entrenó con fotos de laboratorio; en fotos de campo la confianza puede bajar.</p>
@@ -65,10 +73,14 @@
 
   <h2>Cómo se comporta el modelo</h2>
   <div class="kpis">
-    <div class="kpi"><b>{% widthratio metricas.valid_accuracy 1 100 %}%</b><span>Accuracy en validación</span></div>
-    <div class="kpi"><b>{% widthratio metricas.valid_top3_accuracy 1 100 %}%</b><span>Acierto dentro del top-3</span></div>
-    <div class="kpi"><b>{% widthratio metricas.valid_f1_macro 1 100 %}%</b><span>F1 macro</span></div>
+    <div class="kpi"><b>{% widthratio metricas.accuracy 1 100 %}%</b><span>Accuracy en {{ metricas.conjunto }}</span></div>
+    <div class="kpi"><b>{% widthratio metricas.top3_accuracy 1 100 %}%</b><span>Acierto dentro del top-3</span></div>
+    <div class="kpi"><b>{% widthratio metricas.f1_macro 1 100 %}%</b><span>F1 macro</span></div>
+    {% if metricas.plantdoc_accuracy %}
+    <div class="kpi"><b>{% widthratio metricas.plantdoc_accuracy 1 100 %}%</b><span>Accuracy en fotos de campo (PlantDoc)</span></div>
+    {% else %}
     <div class="kpi"><b>{{ metricas.imagenes_train }}</b><span>Imágenes de entrenamiento</span></div>
+    {% endif %}
   </div>
 
   <div class="grid two" style="margin-top:16px">
@@ -83,12 +95,12 @@
   </div>
 
   <div class="card" style="margin-top:16px">
-    <h3>Matriz de confusión (validación, normalizada por clase)</h3>
-    <img class="cm" src="{% static 'reports/confusion_matrix.png' %}" alt="Matriz de confusión de las 38 clases" loading="lazy">
+    <h3>Matriz de confusión ({{ metricas.conjunto }}, normalizada por clase)</h3>
+    <img class="cm" src="{% static 'reports/app/confusion_matrix.png' %}" alt="Matriz de confusión de las 38 clases" loading="lazy">
     <p class="note">La diagonal son los aciertos. Los errores se concentran entre enfermedades parecidas del tomate y del maíz.</p>
   </div>
 
-  <p class="note">Modelo: {{ metricas.modelo }} · {{ metricas.clases }} clases · {{ metricas.tamano_tflite_mb }} MB.</p>
+  <p class="note">Modelo {{ metricas.version }}: {{ metricas.modelo }} · {{ metricas.clases }} clases · {{ metricas.imagenes_train }} imágenes de entrenamiento · {{ metricas.tamano_tflite_mb }} MB.</p>
 </main>
 
 {{ historial|json_script:"data-historial" }}
